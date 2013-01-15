@@ -6,11 +6,7 @@ namespace Decorator
     {
         static void Main(string[] args)
         {
-            var normalCar = new NormalCar();
-            var sportsCar = new SportsCar(normalCar);
-            var deliveryCar = new DeliveryCar(sportsCar);
-            var flyingCar = new FlyingCar(deliveryCar);
-            flyingCar.Drive();
+            new FlyingCar(new DeliveryCar(new SportsCar(new NormalCar()))).Drive();
 
             Console.ReadKey();
         }
@@ -67,7 +63,6 @@ namespace Decorator
 
         public override void Drive()
         {
-            Console.Write("Car is ");
         }
     }
 
@@ -75,7 +70,7 @@ namespace Decorator
     {
         public override void Drive()
         {
-            Console.Write("Normal Car ");
+            Console.WriteLine("Normal Car ");
         }  
     }
 
