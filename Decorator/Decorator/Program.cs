@@ -6,65 +6,84 @@ namespace Decorator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(new Female("female").GiveBirth(new Male("male")).Name);
-            Console.WriteLine(new BioRobot("bioRobot").GiveBirth(new Male("male")).Name);
-            
+            var normalCar = new NormalCar();
+            var sportsCar = new SportsCar(normalCar);
+            var deliveryCar = new DeliveryCar(sportsCar);
+            var flyingCar = new FlyingCar(deliveryCar);
+            flyingCar.Drive();
+
             Console.ReadKey();
         }
     }
 
-    public class BioSolder : BioRobot
+    public class FlyingCar : DecorateCar
     {
-        public BioSolder(string name) : base(name)
+        public FlyingCar(VirtualCar car)
+            : base(car)
         {
         }
 
-        public Person Transform(Person person)
+        public override void Drive()
         {
-            return new BioSolder("Solder of " + person.Name);
+            Car.Drive();
+            Console.WriteLine("Flying...");
         }
     }
 
-    public class BioRobot : Person
+    public class SportsCar : DecorateCar
     {
-        public BioRobot(string name) : base(name)
+        public SportsCar(VirtualCar car) : base(car)
         {
         }
 
-        public Person GiveBirth(Person person)
+        public override void Drive()
         {
-            return new Person("BioRobotSon of " + person.Name + " and " + Name);
+            Car.Drive();
+            Console.WriteLine("Sporting...");
         }
     }
 
-    public class Female : Person
+    public class DeliveryCar : DecorateCar
     {
-        public Female(string name) : base(name)
+        public DeliveryCar(VirtualCar car)
+            : base(car)
         {
         }
 
-        public Person GiveBirth(Male male)
+        public override void Drive()
         {
-            return  new Person("Son of " + male.Name + " and " + Name);
+            Car.Drive();
+            Console.WriteLine("Delivering...");
         }
     }
 
-    public class Male : Person
+    public class DecorateCar:VirtualCar
     {
-        public Male(string name)
-            : base(name)
+        public DecorateCar(VirtualCar car)
         {
+            Car = car;
+        }
+        public VirtualCar Car { get; set; }
+
+        public override void Drive()
+        {
+            Console.Write("Car is ");
         }
     }
 
-    public class Person
+    public class NormalCar:VirtualCar
     {
-        public Person(string name)
+        public override void Drive()
         {
-            Name = name;
-        }
+            Console.Write("Normal Car ");
+        }  
+    }
 
-        public string Name { get; private set; }
+    public abstract class VirtualCar
+    {
+        public virtual void Drive()
+        {
+        }
     }
 
 }
